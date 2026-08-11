@@ -61,13 +61,13 @@ end
 
 local function fire(remoteName, ...)
     local r = ReplicatedStorage:FindFirstChild(remoteName)
-    if r then
-        pcall(function()
-            if r:IsA('RemoteEvent') then r:FireServer(...) else r:Fire(...) end
-        end)
-        return true
+    if not r then return false end
+    if r:IsA('RemoteEvent') then
+        pcall(r.FireServer, r, ...)
+    else
+        pcall(r.Fire, r, ...)
     end
-    return false
+    return true
 end
 
 -- ========== ESP ==========
