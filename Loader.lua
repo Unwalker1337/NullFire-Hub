@@ -4,16 +4,14 @@
     Chapters: Lobby, Ch0 Reality, Cloud Theatre, Dream Elementary, Grassy Beach, The Twist,
               Ch2 Introduction, Homescape
     Multi-source fetch with real error reporting.
+    Files live in scripts/ folder.
 ]]
 
--- Multi-source fetch with real error reporting.
--- refs/heads/main = canonical raw URL (no 302 redirect), some executors fail redirects.
-
 local SOURCES = {
-    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/refs/heads/main/",
-    "https://cdn.jsdelivr.net/gh/Unwalker1337/NullFire-Hub@main/",
-    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/main/",
-    "https://github.com/Unwalker1337/NullFire-Hub/raw/refs/heads/main/",
+    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/refs/heads/main/scripts/",
+    "https://cdn.jsdelivr.net/gh/Unwalker1337/NullFire-Hub@main/scripts/",
+    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/main/scripts/",
+    "https://github.com/Unwalker1337/NullFire-Hub/raw/refs/heads/main/scripts/",
 }
 
 local CHAPTERS = {
@@ -35,25 +33,26 @@ if not file then
 end
 
 local function fetch(path)
-    local lastErr = nil
+    local errors = {}
     for i, base in ipairs(SOURCES) do
+        local url = base .. path
         local ok, src = pcall(function()
-            return game:HttpGet(base .. path)
+            return game:HttpGet(url)
         end)
         if ok and type(src) == "string" and #src >= 100 then
-            print("[NullFire] Fetched from source " .. i .. ": " .. base .. path)
+            print("[NullFire] Fetched from source " .. i)
             return src
-        else
-            lastErr = "source " .. i .. " -> " .. tostring(ok and "short/empty response" or src)
         end
+        errors[i] = url .. " -> " .. tostring(ok and ("short/empty (" .. tostring(type(src) == "string" and #src or type(src)) .. ")") or src)
     end
-    return nil, lastErr
+    return nil, errors
 end
 
-local src, err = fetch(file)
+local src, errors = fetch(file)
 if not src then
-    warn("[NullFire] Failed to fetch " .. file .. " from all sources: " .. tostring(err))
-    warn("[NullFire] Try manually in executor: game:HttpGet(\"" .. SOURCES[1] .. file .. "\")")
+    for i, e in ipairs(errors) do
+        warn("[NullFire] source " .. i .. ": " .. e)
+    end
     return
 end
 
