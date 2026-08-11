@@ -1,7 +1,8 @@
 --[[
     NullFire Hub Loader | A Broken Dream
     Checks game.PlaceId and loads the matching chapter script.
-    Chapters: Lobby, Ch0 Reality, Cloud Theatre, Dream Elementary, Grassy Beach, The Twist
+    Chapters: Lobby, Ch0 Reality, Cloud Theatre, Dream Elementary, Grassy Beach, The Twist,
+              Ch2 Introduction, Homescape
 ]]
 
 local BASE = "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/main/scripts/"
@@ -13,6 +14,8 @@ local CHAPTERS = {
     [77782724453274]  = "DreamElementary.lua", -- Dream Elementary
     [129251655434632] = "GrassyBeach.lua",     -- Grassy Beach
     [110334679443599] = "Twist.lua",           -- The Twist
+    [109245555679847] = "Chapter2Intro.lua",   -- Chapter 2 Introduction
+    [73136969954228]  = "Homescape.lua",       -- Homescape
 }
 
 local pid = game.PlaceId
