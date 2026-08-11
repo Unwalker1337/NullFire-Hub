@@ -6,10 +6,14 @@
     Multi-source fetch with real error reporting.
 ]]
 
+-- Multi-source fetch with real error reporting.
+-- refs/heads/main = canonical raw URL (no 302 redirect), some executors fail redirects.
+
 local SOURCES = {
-    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/main/",
+    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/refs/heads/main/",
     "https://cdn.jsdelivr.net/gh/Unwalker1337/NullFire-Hub@main/",
-    "https://github.com/Unwalker1337/NullFire-Hub/raw/main/",
+    "https://raw.githubusercontent.com/Unwalker1337/NullFire-Hub/main/",
+    "https://github.com/Unwalker1337/NullFire-Hub/raw/refs/heads/main/",
 }
 
 local CHAPTERS = {
@@ -48,7 +52,9 @@ end
 
 local src, err = fetch(file)
 if not src then
-    return warn("[NullFire] Failed to fetch " .. file .. ": " .. tostring(err))
+    warn("[NullFire] Failed to fetch " .. file .. " from all sources: " .. tostring(err))
+    warn("[NullFire] Try manually in executor: game:HttpGet(\"" .. SOURCES[1] .. file .. "\")")
+    return
 end
 
 local fn, loadErr = loadstring(src)
