@@ -18,5 +18,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Unwalker1337/NullFire
 | 77782724453274 (Dream Elementary) | scripts/DreamElementary.lua |
 | 129251655434632 (Grassy Beach) | scripts/GrassyBeach.lua |
 | 110334679443599 (The Twist) | scripts/Twist.lua |
+| 109245555679847 (Chapter 2 Introduction) | scripts/Chapter2Intro.lua |
+| 73136969954228 (Homescape) | scripts/Homescape.lua |
 
 Each chapter script has its own PlaceId guard as backup.
